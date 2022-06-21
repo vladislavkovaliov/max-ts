@@ -1,0 +1,123 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "airbnb",
+    "airbnb/hooks",
+    "airbnb-typescript",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    "semi": [
+      "error",
+      "never"
+    ],
+    "@typescript-eslint/semi": [
+      "error",
+      "never"
+    ],
+    "no-unexpected-multiline": "error",
+    "object-curly-newline": "off",
+    "camelcase": "off",
+    "no-underscore-dangle": "off",
+    "no-console": "error",
+    "padding-line-between-statements": [
+      "error",
+      {
+        "blankLine": "always",
+        "prev": [
+          "const",
+          "let",
+          "case",
+          "default"
+        ],
+        "next": "*"
+      },
+      {
+        "blankLine": "any",
+        "prev": [
+          "const",
+          "let"
+        ],
+        "next": [
+          "const",
+          "let"
+        ]
+      }
+    ],
+    "newline-before-return": "error",
+    "import/prefer-default-export": "off",
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          "**/*.stories.js",
+          "**/*.test.js"
+        ]
+      }
+    ],
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index"
+        ],
+        "newlines-between": "never"
+      }
+    ],
+    "func-names": "off",
+    "react/jsx-filename-extension": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/function-component-definition": [
+      "error",
+      {
+        "namedComponents": "arrow-function",
+        "unnamedComponents": "arrow-function"
+      }
+    ],
+    "react/no-adjacent-inline-elements": "off",
+    "react/jsx-key": [
+      "error",
+      {
+        "checkFragmentShorthand": true
+      }
+    ],
+    "react/jsx-newline": "off",
+    "react-perf/jsx-no-jsx-as-prop": "off",
+    "react-hooks/exhaustive-deps": "error",
+    "jsx-a11y/anchor-is-valid": [
+      "error",
+      {
+        "components": [
+          "Link"
+        ],
+        "specialLink": [
+          "to"
+        ],
+        "aspects": [
+          "invalidHref"
+        ]
+      }
+    ],
+    "jest/prefer-inline-snapshots": "off",
+    "jest/prefer-expect-assertions": "off",
+    "jest/prefer-called-with": "off",
+    "jest/lowercase-name": "off",
+    "jest/no-hooks": "off"
+  },
+  "parserOptions": {
+    "project": [
+      "./tsconfig.json"
+    ]
+  }
+}
