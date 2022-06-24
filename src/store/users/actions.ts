@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { message } from 'antd'
 
 export interface User {
   name: string,
@@ -19,20 +20,45 @@ export interface User {
   url: string
 }
 
-type UsersResponse = {
+export type UsersResponse = {
   count: number,
-  next: string,
-  previous: null,
   results: Array<User>
 }
+
+const info = (messageText: string) => message.info(messageText)
 
 export const usersApi = createApi({
   reducerPath: 'usersApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://swapi.dev/api/' }),
   endpoints: (build) => ({
-    getUsers: build.query<UsersResponse, void>({
-      query: () => 'people',
-      transformResponse: (response) => response,
+    getUsers: build.query<Pick<UsersResponse, 'results' | 'count'>, number>({
+      query: (page) => `people/?page=${page}`,
+      transformResponse: (response: UsersResponse) => ({
+        count: response.count,
+        results: response.results,
+      }),
+      providesTags: (response: UsersResponse) => ({
+        count: response.count,
+        results: response.results.map(({ name }) => ({
+          type: 'Users',
+          name,
+        })),
+      }),
+      async onQueryStarted(
+        arg,
+        {
+          queryFulfilled,
+        },
+      ) {
+        info('Fetching...')
+        try {
+          await queryFulfilled
+
+          return await info('Received!')
+        } catch (err) {
+          return info('Error!')
+        }
+      },
     }),
   }),
 })
