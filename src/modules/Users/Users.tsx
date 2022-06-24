@@ -1,6 +1,6 @@
-import React, { useMemo, useState } from 'react'
-import { Spin, Row, Col, Card } from 'antd'
-import { useGetUsersQuery } from '../../store/users/actions'
+import React, { useCallback, useMemo, useState } from 'react'
+import { Spin, Row, Col, Card, Button } from 'antd'
+import { useGetUsersQuery, useAddUserMutation } from '../../store/users/actions'
 import { Wrapper, PaginationWrapper } from './Users.styles'
 
 const {
@@ -20,7 +20,13 @@ const Users = () => {
     isFetching,
   } = useGetUsersQuery(limit)
 
+  const [addUser, { isLoading: isLoadingPostUser }] = useAddUserMutation()
+
   const isLoadingUsers = useMemo(() => isLoading || isFetching, [isFetching, isLoading])
+
+  const onClickCallback = useCallback(async () => {
+    addUser()
+  }, [addUser])
 
   return (
     <Wrapper>
@@ -49,6 +55,7 @@ const Users = () => {
         showSizeChanger={false}
         onChange={setLimit}
       />
+      <Button loading={isLoadingPostUser} onClick={onClickCallback}>Check</Button>
     </Wrapper>
   )
 }

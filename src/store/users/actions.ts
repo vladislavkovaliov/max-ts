@@ -29,21 +29,19 @@ const info = (messageText: string) => message.info(messageText)
 
 export const usersApi = createApi({
   reducerPath: 'usersApi',
+  tagTypes: ['USERS'],
   baseQuery: fetchBaseQuery({ baseUrl: 'https://swapi.dev/api/' }),
   endpoints: (build) => ({
-    getUsers: build.query<Pick<UsersResponse, 'results' | 'count'>, number>({
+    getUsers: build.query<UsersResponse, number>({
       query: (page) => `people/?page=${page}`,
       transformResponse: (response: UsersResponse) => ({
         count: response.count,
         results: response.results,
       }),
-      providesTags: (response: UsersResponse) => ({
-        count: response.count,
-        results: response.results.map(({ name }) => ({
-          type: 'Users',
-          name,
-        })),
-      }),
+      providesTags: () => [{
+        type: 'USERS',
+        id: 'LIST',
+      }],
       async onQueryStarted(
         arg,
         {
@@ -60,7 +58,21 @@ export const usersApi = createApi({
         }
       },
     }),
+    addUser: build.mutation<UsersResponse, void>({
+      query() {
+        return {
+          url: 'people',
+        }
+      },
+      invalidatesTags: (result, error) => (!error ? [{
+        type: 'USERS',
+        id: 'LIST',
+      }] : []),
+    }),
   }),
 })
 
-export const { useGetUsersQuery } = usersApi
+export const {
+  useGetUsersQuery,
+  useAddUserMutation,
+} = usersApi
